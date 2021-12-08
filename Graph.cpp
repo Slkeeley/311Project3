@@ -10,9 +10,44 @@
 using namespace std;
 
 Graph::Graph(){
-	nodes={};
-	edges={}; 
+	nodes={}; 
 }//initialize graph constructor
+
+void Graph::Djikstra(int s)
+{
+	for(int v=0; v< nodes.size(); v++)
+	{
+		nodes[v]->dist=INT_MAX;
+		nodes[v]->predecessor=nullptr;
+	}//set all distances to infinity
+	
+
+	nodes[s]=0;//the distance to our starting node is 0; 
+	queue<Node*> Q;//create a queue of nodes
+
+	for(int v=0; v<nodes.size(); v++)
+	{	
+		Q.push(nodes[v]); 
+	}//add all the nodes to the queue
+	 
+	while(!Q.empty())
+	{
+		Node* currNode= Q.front();//take the top node in the queue
+		Q.pop(); 
+		for(int v=0; v<currNode->neighbors.size(); v++)//for loop to go through all neighbors of the current node 
+		{
+			Node* neighbor=currNode->neighbors[v]; 
+			if(neighbor->dist >(currNode->dist +currNode->edges[v]->weight))
+			{
+				neighbor->dist= currNode->dist + currNode->edges[v]->weight;
+				neighbor->predecessor=currNode; 
+			}//change the distance and predecessor if shorter distance is found
+		}
+	}//while queue is not empty keep the algorithm going 
+}
+
+
+
 
 void Graph::printAdjList(){
 	for(int i=0; i< nodes.size(); i++)

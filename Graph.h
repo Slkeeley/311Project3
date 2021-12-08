@@ -20,7 +20,7 @@ class Graph{
     int DFSVisit(int, int);
     void BFS(int);
     std::vector<int> distancesFrom(int);
-
+    void Djikstra(int s); 
     bool isConnected();
     bool isReachable(int, int);
 };

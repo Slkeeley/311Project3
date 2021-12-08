@@ -14,41 +14,6 @@ bool verifyPath(Graph G, vector<int> path, int i, int c)//i for initial charge o
 	return false; 
 }//check if the vehicle is able to make the trip with the selected path of nodes 
 
-void Djikstra(Graph G, int s, int i, int c)
-{
-	for(int v=0; v< G.nodes.size(); v++)
-	{
-		G.nodes[v]->dist=INT_MAX;
-	}//set all distances to infinity
-	
-
-	queue<Node*> Q;//create a queue of nodes
-
-	for(int v=0; v<G.nodes.size(); v++)
-	{	
-		Q.push(G.nodes[v]); 
-	}//add all the nodes to the queue
-
-	G.nodes[s]->dist=0; //distance to our starting node is 0; 
-
-	
-	 
-	while(!Q.empty())
-	{
-		Node* currNode= Q.front();//take the top node in the queue
-		Q.pop(); 
-		for(int v=0; v<currNode->neighbors.size(); v++)//for loop to go through all neighbors of the current node 
-		{
-			Node* neighbor=currNode->neighbors[v]; 
-			if(neighbor->dist >(currNode->dist /*+ distance between the current neighbor and currNode)*/))
-			{
-				neighbor->dist= currNode->dist /*+ distance to current neighbor*/;
-				neighbor->predecessor=currNode; 
-			}//change the distance and predecessor if shorter distance is found
-		}
-	}
-}
-
 int main()
 {
 //GLOBAL VARIABLES
@@ -89,10 +54,16 @@ for(int v=0; v<m; v++)//create edges between select nodes
 {
 	int x=-1, y=-1, dist=-1; 
 	cin >> x>> y >> dist; //values being input are the nodes' indexes 
+	
 	//add new nodes to neighboring vectors
 	G.nodes[x]->neighbors.push_back(G.nodes[y]); 
        	G.nodes[y]->neighbors.push_back(G.nodes[x]);//each nodes vector of neighbors is being pushed back
 
+	//create new edges to be added to each nodes edge vector; 
+	Edge* e= new Edge(dist, x);
+	Edge* f= new Edge(dist, y); 
+	G.nodes[x]->edges.push_back(e); 
+	G.nodes[y]->edges.push_back(e); 
 
 }//give each edge two nodes to connect
 
@@ -100,10 +71,48 @@ for(int v=0; v<m; v++)//create edges between select nodes
 //END OF USER INPUTS 
 
 //BEGIN CREATING INTERMEDIATE GRAPH 
-G.printAdjList(); 
+for(int v=0; v<n; v++)
+{
+	if(G.nodes[v]->charger==true || G.nodes[v]->id==start || G.nodes[v]->id==end)
+	{
+		Node* x= new Node(G.nodes[v]->id); 
+		sG.nodes.push_back(x);
+	}//only add the start, end and charging nodes to this simplified graph
+}
+
+for(int v=0; v<sG.nodes.size(); v++)
+{
+
+	G.Djikstra(sG.nodes[v]->id);//find all distances to nodes in main graph from charging stations and start/end 
+	for(int j=0; j<sG.nodes.size(); j++)
+	{
+		Node* newNeighbor= sG.nodes[j];
+		newNeighbor->dist=G.nodes[newNeighbor->id]->dist; 
+		if(newNeighbor->dist <= c)//if the distance to a charging station is less than max charge add the edge to the graph;
+		{
+			sG.nodes[v]->neighbors.push_back(sG.nodes[j]); 
+			sG.nodes[j]->neighbors.push_back(sG.nodes[v]);
+		}
+
+	}	
+
+}//Add the neighbors to the simpified graph 
+
+sG.Djikstra(sG.nodes[sG.nodes.size()-1]->id);//use Djikstra's to find the distances from the destination to the start; 
+
+int totalDistance=sG.nodes[0]->dist;
+
+if(totalDistance==INT_MAX)
+{
+	cout<<"No path"<<endl;
+	return 0; 
+}
+
+cout << totalDistance<<endl;
 
 
 
-cout << n << m << c << i<< endl;
+
+cout << "program is ending" << endl;
 return 0;
 }
