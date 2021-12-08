@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include "Edge.h"
 using namespace std;
 
 class Node{
@@ -18,8 +19,8 @@ class Node{
     bool visited;
     bool charger; 
     Node* predecessor;
-    string color;
-    vector<Node*> neighbors;
+  vector<Node*> neighbors; 
+    vector<Edge*> edges;
     
     Node();
     Node(int);

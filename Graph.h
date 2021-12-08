@@ -11,8 +11,7 @@
 
 class Graph{
   public:
-    vector<Node> nodes;
-    vector<Edge> edges; 
+    vector<Node*> nodes; 
     Graph();
 
     void printAdjList();
@@ -22,10 +21,7 @@ class Graph{
     void BFS(int);
     std::vector<int> distancesFrom(int);
 
-    bool isTwoColorable();
     bool isConnected();
-    bool hasCycle();
-    bool hasCycleRecur(int);
     bool isReachable(int, int);
 };
 

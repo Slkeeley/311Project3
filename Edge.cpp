@@ -7,12 +7,13 @@ using namespace std;
 Edge::Edge()
 {
 	weight=0; 
-	eNodes= {};
+	id=0;
+       	visited=false; 	
 }
 
-Edge::Edge(int a)
+Edge::Edge(int w, int ID)
 {
-	weight=a; 
-	eNodes={}; 
-
+	weight=w; 
+	id=ID; 
+	visited=false;
 }

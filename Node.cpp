@@ -1,8 +1,9 @@
 // CSCI 311 - Fall 2021
 // Node cpp
 // Author: Carter Tillquist
-
+//Added slight changes to class with Edge.h: Sam Keeley
 #include "Node.h"
+#include "Edge.h"
 #include <string>
 #include <vector>
 #include <limits.h>
@@ -14,7 +15,6 @@ Node::Node(){
   finished = -1;
   visited = false;
   charger=false;
-  color = "";
   predecessor = nullptr;
   neighbors = {};
 }
@@ -26,7 +26,6 @@ Node::Node(int i){
   finished = -1;
   visited = false;
   charger=false;
-  color = "";
   predecessor = nullptr;
   neighbors = {};
 }
