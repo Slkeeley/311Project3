@@ -138,14 +138,16 @@ int main()
 		}	
 
 	}//Add the neighbors to the simpified graph 
-cout<<"Djikstras on Smaller graph starting"<<endl; 
-	sG.Djikstra(sG.nodes.size()-1); 
-	sG.printAdjList();  
-	cout <<"now printing main graph"<<endl;
-	G.printAdjList(); 
+	sG.printAdjList(); 
+
+cout <<"RUNNING DJIKSTRAS ON SMALLER GRAPH"<<endl;
+	sG.Djikstra(sG.nodes.size()); 
+//	sG.printAdjList();  
+	
+	//G.printAdjList(); 
 	
 	int totalDistance= sG.nodes[0]->dist; 
-
+	cout <<totalDistance<<": "<<endl;
 //	if(totalDistance ==INT_MAX) 	check if there was no suitable path;
 //	implement verify path here
 //begin printing here

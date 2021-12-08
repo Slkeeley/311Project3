@@ -32,7 +32,7 @@ void pQ::heapify(int s)
 	int parent =(s-1)/2;
 	int min=s; 
 	int size= heap.size(); 
-
+/*
 	if(heap[parent] != heap[s] && heap[parent]->dist > heap[s]->dist)
 	{
 		Node* tempNode= heap[s];
@@ -40,9 +40,9 @@ void pQ::heapify(int s)
 		heap[parent]= tempNode; 
 		heapify(parent); 
 	}
-
-	if(left <= size && heap[left]->dist < heap[s]->dist)  { min=left;  }
-	if(right <= size && heap[right]->dist <heap[s]->dist) { min=right; }
+*/
+	if(left < size && heap[left]->dist < heap[s]->dist)  { min=left;  }
+	if(right < size && heap[right]->dist <heap[s]->dist) { min=right; }
 
 	if(min!=s)
 	{

@@ -18,6 +18,7 @@ Graph::Graph(){
 
 void Graph::Djikstra(int s)
 {
+	cout << "Starting Djikstras from "<< s<<endl;
 	for(int v=0; v< nodes.size(); v++)
 	{
 		nodes[v]->dist=INT_MAX;
@@ -35,22 +36,23 @@ void Graph::Djikstra(int s)
 
 	}
 
-	minHeap.heapify(0); 
+	minHeap.heapify(s); 	 
 	while(!minHeap.empty())
 	{
 		Node* currNode= minHeap.pop();//take current top of the queue and use to find distances
-		cout << currNode->id<<endl;
-
+		//`cout <<  "current node has "<<currNode->neighbors.size() <<" neighbors"<<endl; 
 		for(int v=0; v<currNode->neighbors.size(); v++)//for loop to go through all neighbors of the current node 
 		{
 			Node* neighbor=currNode->neighbors[v];
 		     
 			if(neighbor->dist >(currNode->dist + edgeWeights[currNode->id][neighbor->id]))
 			{
-	 
+			//	cout << currNode->id<< " is the current node "<< currNode->dist<<endl;
+			      // 	cout << neighbor->id<< " is the current neighbor "<< neighbor->dist<<endl;	
 				neighbor->dist =(currNode->dist +edgeWeights[currNode->id][neighbor->id]); 
+				cout << "the new distance to "<< neighbor->id<<" is " <<neighbor->dist<<endl;
 				neighbor->predecessor=currNode; 
-				minHeap.heapify(neighbor->id);  
+				minHeap.heapify(0);  
 			}//change the distance and predecessor if shorter distance is found
 		}
 	}//while queue is not empty keep the algorithm going 
@@ -69,11 +71,13 @@ void Graph::printAdjList(){
 		cout<< nodes[i]->id<<": ";
 		for(int v=0; v<nodes[i]->neighbors.size();v++)
 		{
-				cout<< nodes[i]->neighbors[v]->id<<" ";
+				cout<< nodes[i]->neighbors[v]->id<<" "<<"(distance to this node is)"<<nodes[i]->neighbors[v]->dist<<endl;
 		}
 		cout << endl;
 	}
 }//print all nodes and what they are adjacent two
+
+
 
 bool Graph::isNeighbor(int u, int v){
 	if(u==v) {return false;}// node cannot be its own neighbor
