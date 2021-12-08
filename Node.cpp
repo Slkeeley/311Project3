@@ -3,7 +3,6 @@
 // Author: Carter Tillquist
 //Added slight changes to class with Edge.h: Sam Keeley
 #include "Node.h"
-#include "Edge.h"
 #include <string>
 #include <vector>
 #include <limits.h>

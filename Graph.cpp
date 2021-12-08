@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "Graph.h"
+#include "Node.h"
+#include "pQ.h"
 #include <vector>
 #include <queue>
 #include <limits.h>
@@ -11,6 +13,7 @@ using namespace std;
 
 Graph::Graph(){
 	nodes={}; 
+	edgeWeights ={}; 
 }//initialize graph constructor
 
 void Graph::Djikstra(int s)
@@ -19,35 +22,46 @@ void Graph::Djikstra(int s)
 	{
 		nodes[v]->dist=INT_MAX;
 		nodes[v]->predecessor=nullptr;
+		
 	}//set all distances to infinity
 	
 
-	nodes[s]=0;//the distance to our starting node is 0; 
-	queue<Node*> Q;//create a queue of nodes
-
+	nodes[s]->dist=0;//the distance to our starting node is 0; 
+	pQ minHeap;//create a queue of nodes
+	
 	for(int v=0; v<nodes.size(); v++)
-	{	
-		Q.push(nodes[v]); 
-	}//add all the nodes to the queue
-	 
-	while(!Q.empty())
 	{
-		Node* currNode= Q.front();//take the top node in the queue
-		Q.pop(); 
+	minHeap.push(nodes[v]); 
+
+	}
+
+	minHeap.heapify(0); 
+	while(!minHeap.empty())
+	{
+		Node* currNode= minHeap.pop();//take current top of the queue and use to find distances
+		cout << currNode->id<<endl;
+
 		for(int v=0; v<currNode->neighbors.size(); v++)//for loop to go through all neighbors of the current node 
 		{
-			Node* neighbor=currNode->neighbors[v]; 
-			if(neighbor->dist >(currNode->dist +currNode->edges[v]->weight))
+			Node* neighbor=currNode->neighbors[v];
+		     
+			if(neighbor->dist >(currNode->dist + edgeWeights[currNode->id][neighbor->id]))
 			{
-				neighbor->dist= currNode->dist + currNode->edges[v]->weight;
+	 
+				neighbor->dist =(currNode->dist +edgeWeights[currNode->id][neighbor->id]); 
 				neighbor->predecessor=currNode; 
+				minHeap.heapify(neighbor->id);  
 			}//change the distance and predecessor if shorter distance is found
 		}
 	}//while queue is not empty keep the algorithm going 
 }
 
-
-
+void Graph::createMatrix(int totalNodes)
+{
+	vector<int> across(totalNodes, -1); 
+	vector<vector<int>> down(totalNodes, across);
+	edgeWeights=down; 
+}
 
 void Graph::printAdjList(){
 	for(int i=0; i< nodes.size(); i++)
