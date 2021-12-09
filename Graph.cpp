@@ -18,7 +18,6 @@ Graph::Graph(){
 
 void Graph::Djikstra(int s)
 {
-	cout << "Starting Djikstras from "<< s<<endl;
 	for(int v=0; v< nodes.size(); v++)
 	{
 		nodes[v]->dist=INT_MAX;
@@ -26,7 +25,7 @@ void Graph::Djikstra(int s)
 		
 	}//set all distances to infinity
 	
-
+	
 	nodes[s]->dist=0;//the distance to our starting node is 0; 
 	pQ minHeap;//create a queue of nodes
 	
@@ -40,17 +39,14 @@ void Graph::Djikstra(int s)
 	while(!minHeap.empty())
 	{
 		Node* currNode= minHeap.pop();//take current top of the queue and use to find distances
-		//`cout <<  "current node has "<<currNode->neighbors.size() <<" neighbors"<<endl; 
+	
 		for(int v=0; v<currNode->neighbors.size(); v++)//for loop to go through all neighbors of the current node 
 		{
-			Node* neighbor=currNode->neighbors[v];
-		     
-			if(neighbor->dist >(currNode->dist + edgeWeights[currNode->id][neighbor->id]))
+			Node* neighbor=currNode->neighbors[v]; 
+			if(neighbor->dist >(currNode->dist + edgeWeights[indexCorrection(currNode->id)][indexCorrection(neighbor->id)]))
 			{
-			//	cout << currNode->id<< " is the current node "<< currNode->dist<<endl;
-			      // 	cout << neighbor->id<< " is the current neighbor "<< neighbor->dist<<endl;	
-				neighbor->dist =(currNode->dist +edgeWeights[currNode->id][neighbor->id]); 
-				cout << "the new distance to "<< neighbor->id<<" is " <<neighbor->dist<<endl;
+
+				neighbor->dist =(currNode->dist +edgeWeights[indexCorrection(currNode->id)][indexCorrection(neighbor->id)]); 
 				neighbor->predecessor=currNode; 
 				minHeap.heapify(0);  
 			}//change the distance and predecessor if shorter distance is found
@@ -65,13 +61,25 @@ void Graph::createMatrix(int totalNodes)
 	edgeWeights=down; 
 }
 
+int Graph::indexCorrection(int s)
+{
+	for(int i=0; i<nodes.size(); i++)
+	{
+
+	if(nodes[i]->id==s) { return i; }
+	}
+	return -1; 
+
+}
+
 void Graph::printAdjList(){
 	for(int i=0; i< nodes.size(); i++)
 	{
 		cout<< nodes[i]->id<<": ";
 		for(int v=0; v<nodes[i]->neighbors.size();v++)
 		{
-				cout<< nodes[i]->neighbors[v]->id<<" "<<"(distance to this node is)"<<nodes[i]->neighbors[v]->dist<<endl;
+				cout<< nodes[i]->neighbors[v]->id; 
+				
 		}
 		cout << endl;
 	}

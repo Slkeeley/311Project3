@@ -16,6 +16,7 @@ class Graph{
     vector<vector<int>> edgeWeights;  //use this for holding edge distances 
     Graph();
 
+    int indexCorrection(int s); 
     void createMatrix(int totalNodes); 
     void printAdjList();
     bool isNeighbor(int, int);
